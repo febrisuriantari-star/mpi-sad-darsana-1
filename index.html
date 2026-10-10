@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekspedisi Candi Langit - MPI Sad Darsana Kelas 11</title>
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(30, 41, 59, 0.75);
+            --royal-blue: #3b82f6;
+            --royal-hover: #2563eb;
+            --accent-gold: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #050b14, #1e3a8a, #0f172a);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Screen Views */
+        .view {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease-in-out;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LOGIN / REGISTRATION SCREEN */
+        .login-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding: 20px 10px;
+        }
+
+        .login-logo {
+            font-size: 50px;
+            margin-bottom: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .login-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .login-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            margin-left: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+        }
+
+        /* Header Style */
+        .header {
+            padding: 20px 20px 15px;
+            background: linear-gradient(to bottom, rgba(30, 58, 138, 0.6), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .user-greeting {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .user-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Grid Menu Beranda */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 5px;
+        }
+
+        .menu-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 20px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+            background: rgba(30, 58, 138, 0.5);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .menu-icon {
+            font-size: 26px;
+        }
+
+        .menu-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .menu-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* Buttons & Navigation */
+        .btn {
+            background: var(--royal-blue);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: var(--royal-hover);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .back-link {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Card / Material Item */
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .card-box h3 {
+            color: var(--accent-gold);
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .card-box p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        /* Peta Pendakian List */
+        .island-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .island-item:hover {
+            border-color: var(--accent-gold);
+            background: rgba(30, 58, 138, 0.4);
+            transform: translateX(4px);
+        }
+
+        .island-info h4 {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .island-info span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Quiz UI */
+        .quiz-container {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 18px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .question-text {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .option-btn {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #fff;
+            padding: 12px 14px;
+            border-radius: 12px;
+            text-align: left;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--royal-blue);
+        }
+
+        .option-btn.correct {
+            background: rgba(34, 197, 94, 0.25);
+            border-color: var(--success);
+            color: #4ade80;
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--danger);
+            color: #f87171;
+        }
+
+        /* Certificate View */
+        .certificate-box {
+            background: #ffffff;
+            color: #0f172a;
+            padding: 24px;
+            border-radius: 18px;
+            text-align: center;
+            border: 4px solid var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .certificate-box h2 {
+            font-size: 18px;
+            color: #1e3a8a;
+            margin-bottom: 4px;
+        }
+
+        .certificate-box p {
+            font-size: 11px;
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        .cert-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 2px dashed #cbd5e1;
+            display: inline-block;
+            padding-bottom: 2px;
+            margin: 6px 0;
+        }
+
+        textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            resize: none;
+            height: 110px;
+            margin-top: 10px;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: var(--accent-gold);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- 1. HALAMAN LOGIN / REGISTRASI AWAL -->
+    <div id="view-login" class="view active">
+        <div class="login-wrapper">
+            <div class="login-logo">🏔️✨</div>
+            <div class="login-title">Ekspedisi Candi Langit</div>
+            <div class="login-subtitle">Media Pembelajaran Interaktif Sad Darsana (Kelas 11)</div>
+            
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="input-nama" class="form-input" placeholder="Contoh: Putu Febri Suriantari" value="PUTU FEBRI SURIANTARI">
+            </div>
+            <div class="form-group">
+                <label>Nomor Absen</label>
+                <input type="text" id="input-absen" class="form-input" placeholder="Contoh: 42" value="42">
+            </div>
+            <div class="form-group">
+                <label>Kelas</label>
+                <input type="text" id="input-kelas" class="form-input" placeholder="Contoh: XI B1" value="XI B1">
+            </div>
+            <div class="form-group">
+                <label>Asal Sekolah</label>
+                <input type="text" id="input-sekolah" class="form-input" placeholder="Contoh: SMA Negeri 1 Gianyar" value="SMA NEGERI 1 GIANYAR">
+            </div>
+
+            <button class="btn" onclick="handleLogin()">Mulai Pendakian 🚀</button>
+        </div>
+    </div>
+
+    <!-- HALAMAN SETELAH LOGIN (DASHBOARD & FITUR) -->
+    <div id="main-app-content" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-top">
+                <span id="level-badge">⭐ Level 6 • 790 XP</span>
+                <span id="lives-badge">🪷 7/7 Nyawa</span>
+            </div>
+            <div class="user-greeting" id="display-greeting">Om Swastiastu, PUTU FEBRI</div>
+            <div class="user-sub" id="display-sub">Penjelajah Darsana • SMAN 1 Gianyar</div>
+        </div>
+
+        <!-- CONTENT AREA -->
+        <div style="flex:1; overflow-y:auto; padding: 20px;">
+
+            <!-- BERANDA -->
+            <div id="view-home" class="view active" style="padding:0;">
+                <div class="menu-grid">
+                    <div class="menu-card" onclick="switchInnerView('view-materi')">
+                        <div class="menu-icon">📖</div>
+                        <div class="menu-title">Belajar</div>
+                        <div class="menu-desc">14 kartu materi ringkas Sad Darsana</div>
+                    </div>
+                    <div class="menu-card" onclick="switchInnerView('view-peta')">
+                        <div class="menu-icon">⛰️</div>
+                        <div class="menu-title">Peta Candi</div>
+                        <div class="menu-desc">6 Pos Candi + Final Quest</div>
+                    </div>
+                    <div class="menu-card" onclick="switchInnerView('view-petunjuk')">
+                        <div class="menu-icon">📌</div>
+                        <div class="menu-title">Petunjuk</div>
+                        <div class="menu-desc">Tujuan & sumber LKPD</div>
+                    </div>
+                    <div class="menu-card" onclick="switchInnerView('view-profil')">
+                        <div class="menu-icon">👤</div>
+                        <div class="menu-title">Profil</div>
+                        <div class="menu-desc">Skor & data penjelajah</div>
+                    </div>
+                    <div class="menu-card" onclick="switchInnerView('view-refleksi')">
+                        <div class="menu-icon">✍️</div>
+                        <div class="menu-title">Refleksi</div>
+                        <div class="menu-desc">Tulis pesan & kesan belajar</div>
+                    </div>
+                    <div class="menu-card" onclick="switchInnerView('view-sertifikat')">
+                        <div class="menu-icon">🏆</div>
+                        <div class="menu-title">Sertifikat</div>
+                        <div class="menu-desc">Siap cetak kelulusan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BELAJAR (MATERI) -->
+            <div id="view-materi" class="view" style="padding:0;">
+                <div id="materi-container"></div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                    <button class="btn" style="width:auto; margin:0;" onclick="nextMateriCard()">Lanjut →</button>
+                </div>
+            </div>
+
+            <!-- PETA PENDAKIAN CANDI -->
+            <div id="view-peta" class="view" style="padding:0;">
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Taklukkan tiap pos pendakian berurutan (5 soal per pos).</p>
+                <div id="pos-list"></div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                </div>
+            </div>
+
+            <!-- QUIZ / GAME SCREEN -->
+            <div id="view-quiz" class="view" style="padding:0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h4 id="quiz-title-pos" style="color: var(--accent-gold); font-size: 14px;">Pos Pendakian</h4>
+                    <span id="quiz-progress-text" style="font-size: 12px; color: var(--text-muted);">Soal 1/5</span>
+                </div>
+                <div class="quiz-container">
+                    <div class="question-text" id="quiz-question">Memuat soal...</div>
+                    <div id="quiz-options"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-peta')">Keluar</button>
+                    <button class="btn" id="btn-next-quiz" style="display:none; width:auto; margin:0;" onclick="nextQuizQuestion()">Lanjut Pos</button>
+                </div>
+            </div>
+
+            <!-- PETUNJUK -->
+            <div id="view-petunjuk" class="view" style="padding:0;">
+                <div class="card-box">
+                    <h3>Tujuan Pembelajaran</h3>
+                    <p>1. Menjelaskan pengertian dan tujuan mempelajari Sad Darsana[cite: 5].</p>
+                    <p>2. Mengidentifikasi enam sistem filsafat Hindu[cite: 5].</p>
+                    <p>3. Menghubungkan pemikiran Darsana dengan kehidupan sehari-hari[cite: 5].</p>
+                </div>
+                <div class="card-box">
+                    <h3>Petunjuk Pendakian</h3>
+                    <p>Awali dengan Om Swastiastu[cite: 5]. Pelajari kartu materi, taklukkan pos candi suci, jaga nyawa bunga lotus, dan selesaikan Final Quest untuk membuka sertifikat resmi[cite: 5]!</p>
+                    <p style="margin-top: 6px; color: var(--accent-gold);">Sumber: LKPD SMAN 1 Gianyar (2026), Buku Pendidikan Agama Hindu dan Budi Pekerti[cite: 5].</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                </div>
+            </div>
+
+            <!-- PROFIL -->
+            <div id="view-profil" class="view" style="padding:0;">
+                <div class="card-box" style="text-align: center;">
+                    <h3 id="profile-name-text" style="font-size: 16px;">PUTU FEBRI SURIANTARI</h3>
+                    <p id="profile-school-text" style="color: #fff; font-weight: 600; margin-top: 4px;">XI B1 • SMA NEGERI 1 GIANYAR (Absen 42)</p>
+                    <p style="margin-top: 8px;">Level 6 • 790 XP[cite: 5]</p>
+                    <p style="color: var(--accent-gold); margin-top: 4px;" id="profile-score-text">Skor Keseluruhan: 73</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                    <button class="btn" style="background: var(--danger); width:auto; margin:0;" onclick="resetData()">Reset Data</button>
+                </div>
+            </div>
+
+            <!-- REFLEKSI -->
+            <div id="view-refleksi" class="view" style="padding:0;">
+                <div class="card-box">
+                    <h3>Refleksi Penjelajah</h3>
+                    <p>Satu nilai Sad Darsana yang akan saya terapkan dalam kehidupan adalah...</p>
+                    <textarea id="refleksi-input" placeholder="Tuliskan refleksimu di sini..."></textarea>
+                </div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                    <button class="btn" style="width:auto; margin:0;" onclick="saveRefleksi()">Simpan</button>
+                </div>
+            </div>
+
+            <!-- SERTIFIKAT -->
+            <div id="view-sertifikat" class="view" style="padding:0;">
+                <div class="certificate-box">
+                    <h2>SERTIFIKAT KELULUSAN</h2>
+                    <p>Diberikan kepada Penjelajah:</p>
+                    <div class="cert-name" id="cert-name-display">PUTU FEBRI SURIANTARI</div>
+                    <p id="cert-school-display">XI B1 - SMA NEGERI 1 GIANYAR</p>
+                    <p style="font-size: 10px; line-height: 1.3;">Telah sukses menuntaskan ekspedisi 6 Pos Candi & Final Quest Media Pembelajaran Interaktif Sad Darsana[cite: 5].</p>
+                    <p style="font-weight: bold; color: #1e3a8a; margin-top: 8px;">Skor: 88 • Status: Sempurna 🪷</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="back-link" onclick="switchInnerView('view-home')">← Beranda</button>
+                    <button class="btn" style="width:auto; margin:0;" onclick="window.print()">Cetak / Simpan</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let userData = {
+        nama: "PUTU FEBRI SURIANTARI",
+        absen: "42",
+        kelas: "XI B1",
+        sekolah: "SMA NEGERI 1 GIANYAR"
+    };
+
+    function handleLogin() {
+        const n = document.getElementById('input-nama').value.trim();
+        const a = document.getElementById('input-absen').value.trim();
+        const k = document.getElementById('input-kelas').value.trim();
+        const s = document.getElementById('input-sekolah').value.trim();
+
+        if(!n || !a || !k || !s) {
+            alert('Mohon isi semua data identitas terlebih dahulu ya, Febri!');
+            return;
+        }
+
+        userData = { nama: n, absen: a, kelas: k, sekolah: s };
+
+        // Update UI Header & Profil & Sertifikat
+        document.getElementById('display-greeting').innerText = `Om Swastiastu, ${n.split(' ')[0]}`;
+        document.getElementById('display-sub').innerText = `Penjelajah Darsana • ${s}`;
+        document.getElementById('profile-name-text').innerText = n.toUpperCase();
+        document.getElementById('profile-school-text').innerText = `${k} • ${s.toUpperCase()} (Absen ${a})`;
+        document.getElementById('cert-name-display').innerText = n.toUpperCase();
+        document.getElementById('cert-school-display').innerText = `${k} - ${s.toUpperCase()}`;
+
+        // Transisi ke Menu Utama
+        document.getElementById('view-login').classList.remove('active');
+        document.getElementById('main-app-content').style.display = 'flex';
+        switchInnerView('view-home');
+    }
+
+    // Data Materi Ringkas Sad Darsana
+    const materiList = [
+        { title: "Apa itu Darsana?", desc: "Berasal dari akar kata 'drs' (melihat/pandangan). Sistem pemikiran filsafat Hindu untuk mencari kebenaran hakiki." },
+        { title: "Pengelompokan Filsafat", desc: "Terbagi dua: Astika (mengakui otoritas Weda seperti Sad Darsana) dan Nastika (tidak mengakui Weda seperti Carvaka/Jaina)." },
+        { title: "1. Darsana Nyaya", desc: "Tokoh: Rsi Gautama. Fokus utama: Logika, penalaran, dan alat pembuktian (Pramana: pengamatan, penyimpulan, perbandingan, sabda)." },
+        { title: "2. Darsana Vaiseshika", desc: "Tokoh: Rsi Kanada. Fokus: Hakikat realitas dan kategori benda alam (Padartha) serta unsur terkecil atom (Paramanu)." },
+        { title: "3. Darsana Samkhya", desc: "Tokoh: Rsi Kapila. Fokus: Dua prinsip dasar realitas yaitu Purusha (kesadaran) dan Prakrti (materi alam), serta Tri Guna." },
+        { title: "4. Darsana Yoga", desc: "Tokoh: Rsi Patanjali. Fokus: Pengendalian pikiran dan disiplin spiritual melalui Astangga Yoga (Yama s.d. Samadhi)." },
+        { title: "5. Darsana Mimamsa", desc: "Tokoh: Rsi Jaimini. Fokus: Pelaksanaan ajaran Karma Kanda / Yajna berdasarkan petunjuk Weda." },
+        { title: "6. Darsana Vedanta", desc: "Tokoh: Rsi Badarayana. Fokus: Hakikat tertinggi hubungan Atman dan Brahman, pencapaian Moksha." }
+    ];
+
+    let currentMateriIdx = 0;
+
+    function switchInnerView(viewId) {
+        document.querySelectorAll('#main-app-content .view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        if(viewId === 'view-materi') renderMateri();
+        if(viewId === 'view-peta') renderPeta();
+    }
+
+    function renderMateri() {
+        const m = materiList[currentMateriIdx];
+        document.getElementById('materi-container').innerHTML = `
+            <div class="card-box" style="min-height: 190px; display: flex; flex-direction: column; justify-content: center;">
+                <span style="font-size: 11px; color: var(--accent-gold); margin-bottom: 6px;">Kartu ${currentMateriIdx + 1} dari ${materiList.length}</span>
+                <h3>${m.title}</h3>
+                <p style="font-size: 13px;">${m.desc}</p>
+            </div>
+        `;
+    }
+
+    function nextMateriCard() {
+        currentMateriIdx = (currentMateriIdx + 1) % materiList.length;
+        renderMateri();
+    }
+
+    // Data Pos Peta Candi & Kuis
+    const posData = [
+        { name: "Pos 1: Gerbang Nyaya", questions: [
+            { q: "Darsana yang memberi perhatian besar pada logika dan penalaran adalah...", opts: ["Yoga", "Mimamsa", "Vedanta", "Nyaya"], ans: 3 },
+            { q: "Tokoh utama dalam tradisi filsafat Nyaya adalah...", opts: ["Rsi Kapila", "Rsi Gautama", "Rsi Patanjali", "Rsi Jaimini"], ans: 1 }
+        ]},
+        { name: "Pos 2: Candi Vaiseshika", questions: [
+            { q: "Kategori realitas dalam ajaran Vaiseshika disebut...", opts: ["Pramana", "Purusha", "Sraddha", "Padartha"], ans: 3 },
+            { q: "Unsur terkecil penyusun benda dalam Vaiseshika disebut...", opts: ["Citta", "Sattva", "Purusha", "Paramanu (atom)"], ans: 3 }
+        ]},
+        { name: "Pos 3: Lembah Samkhya", questions: [
+            { q: "Tokoh pendiri sistem filsafat Samkhya adalah...", opts: ["Rsi Kapila", "Rsi Jaimini", "Rsi Patanjali", "Rsi Gautama"], ans: 0 },
+            { q: "Prinsip kesadaran murni dalam Samkhya dikenal sebagai...", opts: ["Prakrti", "Guna", "Purusha", "Karma"], ans: 2 }
+        ]},
+        { name: "Pos 4: Puncak Yoga", questions: [
+            { q: "Kitab pokok ajaran Yoga Sutra disusun oleh...", opts: ["Rsi Patanjali", "Rsi Kapila", "Rsi Kanada", "Rsi Badarayana"], ans: 0 },
+            { q: "Delapan tahapan agung dalam Yoga disebut...", opts: ["Panca Yadnya", "Astangga Yoga", "Tri Hita Karana", "Catur Marga"], ans: 1 }
+        ]},
+        { name: "Pos 5: Kuil Mimamsa", questions: [
+            { q: "Tokoh yang dikenal dalam tradisi Mimamsa adalah...", opts: ["Rsi Gautama", "Rsi Badarayana", "Rsi Jaimini", "Rsi Kanada"], ans: 2 },
+            { q: "Kitab dasar utama ajaran Mimamsa adalah...", opts: ["Nyaya Sutra", "Yoga Sutra", "Mimamsa Sutra", "Brahma Sutra"], ans: 2 }
+        ]},
+        { name: "Pos 6: Gerbang Vedanta", questions: [
+            { q: "Kata Vedanta dimaknai sebagai...", opts: ["Ilmu bangunan", "Awal Weda", "Ilmu logika", "Akhir atau puncak Weda"], ans: 3 },
+            { q: "Tokoh penyusun Brahma Sutra dalam Vedanta adalah...", opts: ["Rsi Badarayana", "Rsi Kapila", "Rsi Gautama", "Rsi Patanjali"], ans: 0 }
+        ]}
+    ];
+
+    function renderPeta() {
+        let html = '';
+        posData.forEach((pos, idx) => {
+            html += `
+                <div class="island-item" onclick="startQuiz(${idx})">
+                    <div class="island-info">
+                        <h4>${pos.name}</h4>
+                        <span>Status: Terbuka • 2 Soal Latihan</span>
+                    </div>
+                    <span style="font-size: 16px;">🏛️</span>
+                </div>
+            `;
+        });
+        html += `
+            <div class="island-item" onclick="switchInnerView('view-sertifikat')" style="border-color: var(--accent-gold);">
+                <div class="island-info">
+                    <h4 style="color: var(--accent-gold);">Final Quest & Sertifikat Kelulusan</h4>
+                    <span>Buka setelah menyelesaikan pos candi</span>
+                </div>
+                <span style="font-size: 16px;">🏆</span>
+            </div>
+        `;
+        document.getElementById('pos-list').innerHTML = html;
+    }
+
+    let activePos = 0;
+    let activeQ = 0;
+
+    function startQuiz(posIdx) {
+        activePos = posIdx;
+        activeQ = 0;
+        switchInnerView('view-quiz');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const pos = posData[activePos];
+        if (activeQ >= pos.questions.length) {
+            document.getElementById('quiz-question').innerHTML = `Yeay! ${pos.name} berhasil diselesaikan dengan sempurna! 🎉`;
+            document.getElementById('quiz-options').innerHTML = '';
+            document.getElementById('btn-next-quiz').style.display = 'block';
+            document.getElementById('quiz-progress-text').innerText = 'Selesai';
+            return;
+        }
+
+        const qData = pos.questions[activeQ];
+        document.getElementById('quiz-title-pos').innerText = pos.name;
+        document.getElementById('quiz-progress-text').innerText = `Soal ${activeQ + 1}/${pos.questions.length}`;
+        document.getElementById('quiz-question').innerText = qData.q;
+        
+        let optsHtml = '';
+        qData.opts.forEach((opt, idx) => {
+            optsHtml += `<button class="option-btn" onclick="checkAnswer(${idx}, ${qData.ans})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
+        });
+        document.getElementById('quiz-options').innerHTML = optsHtml;
+        document.getElementById('btn-next-quiz').style.display = 'none';
+    }
+
+    function checkAnswer(selected, correct) {
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach((btn, idx) => {
+            if(idx === correct) btn.classList.add('correct');
+            if(idx === selected && selected !== correct) btn.classList.add('wrong');
+            btn.disabled = true;
+        });
+
+        setTimeout(() => {
+            activeQ++;
+            loadQuestion();
+        }, 1200);
+    }
+
+    function nextQuizQuestion() {
+        switchInnerView('view-peta');
+    }
+
+    function saveRefleksi() {
+        const val = document.getElementById('refleksi-input').value;
+        if(val.trim() === '') {
+            alert('Silakan isi catatan refleksi terlebih dahulu ya!');
+        } else {
+            alert('Catatan refleksi berhasil disimpan dengan aman!');
+            switchInnerView('view-home');
+        }
+    }
+
+    function resetData() {
+        if(confirm('Yakin ingin mereset data penjelajahan?')) {
+            alert('Data berhasil diatur ulang.');
+            switchInnerView('view-home');
+        }
+    }
+</script>
+
+</body>
+</html>
